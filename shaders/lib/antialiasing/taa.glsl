@@ -87,7 +87,8 @@ void DoTAA(inout vec3 color, inout vec3 temp, float z1) {
         #endif
         int i = 0;
         while (i < 4) {
-            int mms = int(texelFetch(colortex6, texelCoord + neighbourhoodOffsets[i], 0).g * 255.1);
+            ivec2 maskCoord = clamp(texelCoord + neighbourhoodOffsets[i], ivec2(0), ivec2(view) - ivec2(1));
+            int mms = int(texelFetch(colortex6, maskCoord, 0).g * 255.1);
             if (mms != materialMask) break;
             i++;
         } // Checking edge-pixels prevents flickering
