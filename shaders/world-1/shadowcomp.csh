@@ -1,4 +1,7 @@
-#version 430
+#version 310 es
+
+precision highp float;
+precision highp int;
 
 #define COMPUTE_SHADER
 #define NETHER
