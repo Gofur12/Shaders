@@ -28,7 +28,7 @@
     #define ANISOTROPIC_FILTER 0 //[0 4 8 16]
 
     #define COLORED_LIGHTING 0 //[128 192 256 384 512]
-    #if defined IRIS_FEATURE_CUSTOM_IMAGES && SHADOW_QUALITY > -1 && !defined MC_OS_MAC
+    #if defined IRIS_FEATURE_CUSTOM_IMAGES && defined IRIS_FEATURE_COMPUTE_SHADERS && SHADOW_QUALITY > -1 && !defined MC_OS_MAC
         #define COLORED_LIGHTING_INTERNAL COLORED_LIGHTING
         #if COLORED_LIGHTING_INTERNAL > 0
             #define COLORED_LIGHT_SATURATION 100 //[50 55 60 65 70 75 80 85 90 95 100 105 110 115 120 125]
@@ -49,6 +49,11 @@
         #endif
     #else
         #define COLORED_LIGHTING_INTERNAL 0
+    #endif
+
+    // End portal beam voxelization requires Iris custom image support.
+    #if !defined IRIS_FEATURE_CUSTOM_IMAGES
+        #undef END_PORTAL_BEAM
     #endif
 
     #define WATER_STYLE_DEFINE -1 //[-1 1 2 3]
