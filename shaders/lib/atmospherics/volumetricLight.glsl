@@ -152,7 +152,7 @@ vec4 GetVolumetricLight(inout vec3 color, inout float vlFactor, vec3 translucent
                 sampleMult /= sampleCount;
             #endif
 
-            if (length(shadowPosition.xy * 2.0 - 1.0) < 1.0) {
+            if (length(shadowPosition.xy * 2.0 - 1.0) < 1.0 && shadowPosition.z >= 0.0 && shadowPosition.z <= 1.0) {
                 // 28A3DK6 We need to use texelFetch here or a lot of Nvidia GPUs can't get a valid value
                 shadowSample = texelFetch(shadowtex0, ivec2(shadowPosition.xy * shadowMapResolutionM), 0).x;
                 shadowSample = clamp((shadowSample-shadowPosition.z)*65536.0,0.0,1.0);
