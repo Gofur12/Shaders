@@ -8,6 +8,8 @@ vec3 GetShadowPos(vec3 playerPos) {
 }
 
 vec3 SampleShadow(vec3 shadowPos, float colorMult, float colorPow) {
+    if (any(lessThan(shadowPos, vec3(0.0))) || any(greaterThan(shadowPos, vec3(1.0)))) return vec3(1.0);
+
     float shadow0 = shadow2D(shadowtex0, vec3(shadowPos.st, shadowPos.z)).x;
 
     vec3 shadowcol = vec3(0.0);
@@ -83,10 +85,17 @@ vec2 shadowOffsets[4] = vec2[4](
     vec2( 0.0,-1.0));
 
 vec3 SampleBasicFilteredShadow(vec3 shadowPos, float offset) {
+    if (shadowPos.z < 0.0 || shadowPos.z > 1.0) return vec3(1.0);
+
     float shadow = 0.0;
 
     for (int i = 0; i < 4; i++) {
-        shadow += shadow2D(shadowtex0, vec3(offset * shadowOffsets[i] + shadowPos.st, shadowPos.z)).x;
+        vec2 sampleCoord = offset * shadowOffsets[i] + shadowPos.st;
+        if (all(greaterThanEqual(sampleCoord, vec2(0.0))) && all(lessThanEqual(sampleCoord, vec2(1.0)))) {
+            shadow += shadow2D(shadowtex0, vec3(sampleCoord, shadowPos.z)).x;
+        } else {
+            shadow += 1.0;
+        }
     }
 
     return vec3(shadow * 0.25);
