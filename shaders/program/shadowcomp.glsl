@@ -40,7 +40,8 @@ writeonly uniform image3D floodfill_img_copy;
 
 //Common Functions//
 vec4 GetLightSample(sampler3D lightSampler, ivec3 pos) {
-	return texelFetch(lightSampler, pos, 0);
+	ivec3 maxPos = textureSize(lightSampler, 0) - ivec3(1);
+	return texelFetch(lightSampler, clamp(pos, ivec3(0), maxPos), 0);
 }
 
 vec4 GetLightAverage(sampler3D lightSampler, ivec3 pos, ivec3 voxelVolumeSize) {
