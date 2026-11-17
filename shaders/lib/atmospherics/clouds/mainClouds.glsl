@@ -24,7 +24,7 @@ float InterleavedGradientNoiseForClouds() {
         const float cloudShadowOffset = 0.5;
 
         vec3 shadowPosition0 = GetShadowOnCloudPosition(tracePos, cameraPos);
-        if (length(shadowPosition0.xy * 2.0 - 1.0) < 1.0) {
+        if (length(shadowPosition0.xy * 2.0 - 1.0) < 1.0 && shadowPosition0.z >= 0.0 && shadowPosition0.z <= 1.0) {
             float shadowsample0 = shadow2D(shadowtex0, shadowPosition0).z;
 
             if (shadowsample0 == 0.0) return true;
